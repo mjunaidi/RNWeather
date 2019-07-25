@@ -4,6 +4,7 @@ import Geolocation from '@react-native-community/geolocation'
 import List from './List'
 import {Day,Month,mode,k2f} from '../Util'
 import Constant from '../Constant'
+import Country from '../Country'
 
 const toDate = dt=>{
   if (typeof(dt)==='number') {
@@ -55,7 +56,7 @@ export default function Main(props) {
     fetch(url).then(res=>res.json()).then(data=>{
       setData(data)
       if (typeof(data)==='object'&&data!==null) {
-        const {coord,city,country,list} = data
+        const {coord,city,list} = data
 
         if (typeof(coord)==='object'&&coord!==null) {
           setCoord(coord)
@@ -63,20 +64,15 @@ export default function Main(props) {
 
         if (typeof(city)==='string'&&city.length>0&&city!=='none') setCity(city)
         else if (typeof(city)==='object'&&city!==null) {
-          const {name,coord} = city
+          const {name,coord,country} = city
           if (typeof(name)==='string'&&name.length>0&&name!=='none') {
             setCity(name)
           }
           if (typeof(coord)==='object'&&coord!==null) {
             setCoord(coord)
           }
-        }
-
-        if (typeof(country)==='string'&&country.length>0&&country!=='none') setCountry(country)
-        else if (typeof(country)==='object'&&country!==null) {
-          const {name} = country
-          if (typeof(name)==='string'&&name.length>0&&name!=='none') {
-            setCountry(name)
+          if (typeof(country)==='string'&&country.length>0) {
+            setCountry(Country[country])
           }
         }
 
@@ -123,8 +119,8 @@ export default function Main(props) {
     const Style = StyleSheet.create({
       container: {
         padding: 16,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: 'gray',
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderTopColor: 'gray',
       },
       fontWeightBold: {
         fontWeight: 'bold',
@@ -237,7 +233,7 @@ export default function Main(props) {
 
   return (
     <View style={Style.container}>
-      <Text style={[Style.title,Style.mb3]}>{title()}</Text>
+      <Text style={[Style.title,Style.mb2]}>{title()}</Text>
       <Text style={[Style.datetime,Style.mb2]}>{datetime()}</Text>
       <Text style={[Style.temp,Style.mb1]}>{temp()}</Text>
       <Text style={[Style.weather,Style.mb3]}>{weather()}</Text>
