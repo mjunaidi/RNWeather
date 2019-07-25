@@ -1,6 +1,7 @@
 ## How is this being created?
 
     react-native init RNWeather
+    yarn add @react-native-community/geolocation
 
 ## Running in iOS Simulator
 
