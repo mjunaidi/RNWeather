@@ -4,7 +4,15 @@ Data from OpenWeatherMap
 
 ## Preview
 
-![](./screenshot.png)
+> Toggle current temperature between Celcius or Fahrenheit
+
+### In Celcius
+
+![](./screenshot/celcius.png)
+
+### In Fahrenheit
+
+![](./screenshot/fahrenheit.png)
 
 ## How is this being created?
 
