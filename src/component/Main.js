@@ -45,7 +45,10 @@ export default function Main(props) {
       })
       return a.map(e=>{
         const {date,min,max,weather} = e
-        const range = `${k2f(Math.min(...min))} - ${k2f(Math.max(...max))}`
+        const range = {
+          min: Math.min(...min),
+          max: Math.max(...max),
+        }
         return {date,range,weather:mode(weather)}
       })
     }
@@ -117,12 +120,18 @@ export default function Main(props) {
 
   const renderItem = e=>{
     const {date,range,weather} = e
+    const {min,max} = range
     return (
       <View style={[Style.p2,Style.borderTop]}>
         <View style={Style.row}>
           <View>
             <Text style={[Style.fontWeightBold]}>{date}</Text>
-            <Text style={[Style.fontWeightBold,Style.textBlack50]}>{range}</Text>
+            <View style={Style.row}>
+              <Temp onPress={toggle} value={min} celcius={celcius} style={[Style.fontWeightBold,Style.textBlack50]} />
+              <Text> - </Text>
+              <Temp onPress={toggle} value={max} celcius={celcius} style={[Style.fontWeightBold,Style.textBlack50]} />
+            </View>
+            {false&&<Text style={[Style.fontWeightBold,Style.textBlack50]}>{range}</Text>}
             <Text style={Style.textBlack50}>{weather}</Text>
           </View>
           <View><Text style={Style.angle}>{'\u203a'}</Text></View>
