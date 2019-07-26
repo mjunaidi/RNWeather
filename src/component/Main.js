@@ -3,7 +3,7 @@ import {View,Text,Button} from 'react-native'
 import Geolocation from '@react-native-community/geolocation'
 import List from './List'
 import Temp from './Temp'
-import {Day,Month,mode,k2f} from '../Util'
+import {Day,Month,mode,k2f,today,iconOf} from '../Util'
 import Constant from '../Constant'
 import Country from '../Country'
 import Style from '../Style'
@@ -132,7 +132,7 @@ export default function Main(props) {
               <Temp onPress={toggle} value={max} celcius={celcius} style={[Style.fontWeightBold,Style.textBlack50]} />
             </View>
             {false&&<Text style={[Style.fontWeightBold,Style.textBlack50]}>{range}</Text>}
-            <Text style={Style.textBlack50}>{weather}</Text>
+            <Text style={Style.textBlack50}>{iconOf(weather)} {weather}</Text>
           </View>
           <View><Text style={Style.angle}>{'\u203a'}</Text></View>
         </View>
@@ -157,11 +157,6 @@ export default function Main(props) {
     return `Weather`
   }
 
-  const datetime = ()=>{
-    const d = new Date()
-    return `${Day[d.getDay()].slice(0,3)}, ${d.getDate()} ${Month[d.getMonth()].slice(0,3)} ${d.getFullYear()} ${`0${d.getHours()}`.slice(-2)}:${`0${d.getMinutes()}`.slice(-2)} ${d.getHours()<12?'AM':'PM'}`
-  }
-
   const toggle = e=>{
     setCelcius(!celcius)
   }
@@ -184,12 +179,16 @@ export default function Main(props) {
     if (typeof(data)==='object'&&data!==null) {
       const {list} = data
       if (Array.isArray(list)&&list.length>0) {
-        const {main,weather} = list[0]
+        const {weather} = list[0]
         if (Array.isArray(weather)&&weather.length>0) {
-          return weather[0].main
+          const {main} = weather[0]
+          if (typeof(main)==='string'&&main.length>0) {
+            return `${iconOf(main)} ${main}`
+          }
         }
       }
     }
+    return ''
   }
 
   return (
@@ -198,8 +197,7 @@ export default function Main(props) {
         <Text style={[Style.title]}>{title()}</Text>
       </View>
       <View style={[Style.content]}>
-        <Text style={[Style.datetime,Style.mb1]}>{datetime()}</Text>
-        {false&&<Text style={[Style.temp,Style.mb0]}>{temp()}</Text>}
+        <Text style={[Style.datetime,Style.mb1]}>{today()}</Text>
         {renderTemp()}
         <Text style={[Style.weather,Style.mb2]}>{weather()}</Text>
 
