@@ -2,6 +2,7 @@ import React from 'react'
 import {View,Text,Button} from 'react-native'
 import Geolocation from '@react-native-community/geolocation'
 import List from './List'
+import Temp from './Temp'
 import {Day,Month,mode,k2f} from '../Util'
 import Constant from '../Constant'
 import Country from '../Country'
@@ -24,6 +25,7 @@ export default function Main(props) {
   const [message,setMessage] = React.useState()
   const [data,setData] = React.useState()
   const [list,setList] = React.useState([])
+  const [celcius,setCelcius] = React.useState(false)
 
   const aggregate = list=>{
     if (Array.isArray(list)&&list.length>0) {
@@ -151,15 +153,22 @@ export default function Main(props) {
     return `${Day[d.getDay()].slice(0,3)}, ${d.getDate()} ${Month[d.getMonth()].slice(0,3)} ${d.getFullYear()} ${`0${d.getHours()}`.slice(-2)}:${`0${d.getMinutes()}`.slice(-2)} ${d.getHours()<12?'AM':'PM'}`
   }
 
-  const temp = ()=>{
+  const toggle = e=>{
+    setCelcius(!celcius)
+  }
+
+  const renderTemp = ()=>{
     if (typeof(data)==='object'&&data!==null) {
       const {list} = data
       if (Array.isArray(list)&&list.length>0) {
         const {main,weather} = list[0]
-        const {temp_max} = main
-        return k2f(temp_max)
+        const {temp} = main
+        return (
+          <Temp style={[Style.temp,Style.mb0]} value={temp} celcius={celcius} onPress={toggle} />
+        )
       }
     }
+    return null
   }
 
   const weather = ()=>{
@@ -181,7 +190,8 @@ export default function Main(props) {
       </View>
       <View style={[Style.content]}>
         <Text style={[Style.datetime,Style.mb1]}>{datetime()}</Text>
-        <Text style={[Style.temp,Style.mb0]}>{temp()}</Text>
+        {false&&<Text style={[Style.temp,Style.mb0]}>{temp()}</Text>}
+        {renderTemp()}
         <Text style={[Style.weather,Style.mb2]}>{weather()}</Text>
 
         <View style={[Style.block,Style.ps1]}>
