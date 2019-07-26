@@ -1,10 +1,11 @@
 import React from 'react'
-import {StyleSheet,View,Text,Button} from 'react-native'
+import {View,Text,Button} from 'react-native'
 import Geolocation from '@react-native-community/geolocation'
 import List from './List'
 import {Day,Month,mode,k2f} from '../Util'
 import Constant from '../Constant'
 import Country from '../Country'
+import Style from '../Style'
 
 const toDate = dt=>{
   if (typeof(dt)==='number') {
@@ -78,8 +79,6 @@ export default function Main(props) {
 
         if (Array.isArray(list)&&list.length>0) {
           setList(aggregate(list))
-          //setList(list.slice(0,2))
-          //setList([list[0]])
         }
       }
     }).catch(e=>{
@@ -116,24 +115,16 @@ export default function Main(props) {
 
   const renderItem = e=>{
     const {date,range,weather} = e
-    const Style = StyleSheet.create({
-      container: {
-        padding: 16,
-        borderTopWidth: StyleSheet.hairlineWidth,
-        borderTopColor: 'gray',
-      },
-      fontWeightBold: {
-        fontWeight: 'bold',
-      },
-      textBlack50: {
-        color: '#888',
-      },
-    })
     return (
-      <View style={Style.container}>
-        <Text style={[Style.fontWeightBold]}>{date}</Text>
-        <Text style={[Style.fontWeightBold,Style.textBlack50]}>{range}</Text>
-        <Text style={Style.textBlack50}>{weather}</Text>
+      <View style={[Style.p2,Style.borderTop]}>
+        <View style={Style.row}>
+          <View>
+            <Text style={[Style.fontWeightBold]}>{date}</Text>
+            <Text style={[Style.fontWeightBold,Style.textBlack50]}>{range}</Text>
+            <Text style={Style.textBlack50}>{weather}</Text>
+          </View>
+          <View><Text style={Style.angle}>{'\u203a'}</Text></View>
+        </View>
       </View>
     )
   }
@@ -183,69 +174,27 @@ export default function Main(props) {
     }
   }
 
-  const Style = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    title: {
-      fontSize: 22,
-    },
-    datetime: {
-      fontSize: 24,
-      fontWeight: 'bold',
-    },
-    temp: {
-      fontSize: 56,
-    },
-    weather: {
-      fontSize: 28,
-      color: 'gray',
-    },
-    mb1: {
-      marginBottom: 8,
-    },
-    mb2: {
-      marginBottom: 16,
-    },
-    mb3: {
-      marginBottom: 24,
-    },
-    danger: {
-      color: 'red'
-    },
-    border: {
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: 'gray',
-    },
-    rounded: {
-      borderRadius: 8,
-    },
-    shadow: {
-      shadowOpacity: 0.75,
-      shadowRadius: 32,
-      shadowColor: 'black',
-      shadowOffset: {width:5,height:10},
-    },
-  })
-
   return (
     <View style={Style.container}>
-      <Text style={[Style.title,Style.mb2]}>{title()}</Text>
-      <Text style={[Style.datetime,Style.mb2]}>{datetime()}</Text>
-      <Text style={[Style.temp,Style.mb1]}>{temp()}</Text>
-      <Text style={[Style.weather,Style.mb3]}>{weather()}</Text>
+      <View style={[{backgroundColor:'orangered',alignSelf:'stretch',alignItems:'center'}]}>
+        <Text style={[Style.title]}>{title()}</Text>
+      </View>
+      <View style={[Style.content]}>
+        <Text style={[Style.datetime,Style.mb1]}>{datetime()}</Text>
+        <Text style={[Style.temp,Style.mb0]}>{temp()}</Text>
+        <Text style={[Style.weather,Style.mb2]}>{weather()}</Text>
 
-      <List value={list} renderItem={renderItem} />
-
-      {message&&<View>
-        <Text style={[Style.danger,Style.mb2]}>{message}</Text>
-        <View style={[Style.border,Style.rounded,Style.shadow]}>
-          <Button onPress={e=>setPosition(Date.now())} title={`\u27f3 Reload`} />
+        <View style={[Style.block,Style.ps1]}>
+          <List value={list} renderItem={renderItem} />
         </View>
-      </View>}
+
+        {message&&<View>
+          <Text style={[Style.danger,Style.mb2]}>{message}</Text>
+          <View style={[Style.border,Style.rounded,Style.shadow]}>
+            <Button onPress={e=>setPosition(Date.now())} title={`\u27f3 Reload`} />
+          </View>
+        </View>}
+      </View>
     </View>
   )
 }

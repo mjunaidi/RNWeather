@@ -1,5 +1,5 @@
 import React from 'react'
-import {StatusBar,SafeAreaView,StyleSheet} from 'react-native'
+import {StatusBar,SafeAreaView,StyleSheet,View} from 'react-native'
 import Main from './Main'
 
 export default function Body(props) {
@@ -10,8 +10,11 @@ export default function Body(props) {
   }
 
   return (
-    <SafeAreaView style={style}>
-      <Main />
-    </SafeAreaView>
+    <>
+      <StatusBar barStyle="light-content" translucent />
+      <View style={style}>
+        <Main />
+      </View>
+    </>
   )
 }
