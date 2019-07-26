@@ -1,3 +1,11 @@
+# React Native Weather App
+
+Data from OpenWeatherMap
+
+## Preview
+
+![](./screenshot.png)
+
 ## How is this being created?
 
     react-native init RNWeather
